@@ -1,6 +1,6 @@
 // আপনার GitHub ইউজারনেম এবং রিপোজিটরি নাম দিন
-const GITHUB_USERNAME = "YOUR_GITHUB_USERNAME"; // <-- পরিবর্তন করুন
-const GITHUB_REPO = "YOUR_REPOSITORY_NAME";      // <-- পরিবর্তন করুন
+const GITHUB_USERNAME = "konaiparimal50"; // <-- পরিবর্তন করুন
+const GITHUB_REPO = "Github-api-test";      // <-- পরিবর্তন করুন
 
 // GitHub Raw URL (সরাসরি ডেটাবেস হিসেবে ব্যবহার হবে)
 const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/data/news.json`;

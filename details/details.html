@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>খবরের বিবরণ | Chetona News</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .details-container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+    .details-card { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+    .details-title { font-family: 'Tiro Bangla', serif; font-size: 2.1rem; line-height: 1.35; margin-bottom: 15px; }
+    .details-img { width: 100%; max-height: 450px; object-fit: cover; border-radius: 8px; margin: 20px 0; }
+    .details-body { font-size: 1.15rem; line-height: 1.8; color: #2c3e50; white-space: pre-line; }
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; text-decoration: none; color: #b71c1c; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <div class="details-container">
+    <a href="../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> হোমপেজে ফিরে যান</a>
+    
+    <div id="loading" style="text-align: center; padding: 40px; font-size: 1.2rem;">
+      <i class="fas fa-spinner fa-spin"></i> খবর লোড হচ্ছে...
+    </div>
+
+    <article id="articleContent" class="details-card" style="display:none;">
+      <h1 id="title" class="details-title"></h1>
+      <div class="card-meta">
+        <span id="editor" class="editor-name"></span>
+        <span id="date" class="publish-date"></span>
+      </div>
+      <img id="image" class="details-img" src="" alt="">
+      <div id="body" class="details-body"></div>
+    </article>
+  </div>
+
+  <script>
+    const GITHUB_USERNAME = "YOUR_GITHUB_USERNAME"; // <-- আপনার ইউজারনেম দিন
+    const GITHUB_REPO = "YOUR_REPOSITORY_NAME";      // <-- আপনার রিপো নাম দিন
+    const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/data/news.json`;
+
+    async function loadArticle() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id) {
+        document.getElementById('loading').innerHTML = "খবরের আইডি পাওয়া যায়নি!";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${DATA_URL}?t=${Date.now()}`);
+        const list = await res.json();
+        const article = list.find(item => item.id === id);
+
+        if (!article) {
+          document.getElementById('loading').innerHTML = "এই খবরটি খুঁজে পাওয়া যায়নি!";
+          return;
+        }
+
+        document.getElementById('title').textContent = article.headline;
+        document.getElementById('editor').innerHTML = `<i class="fas fa-user-edit"></i> ${article.editor || 'P.K EDITOR'}`;
+        document.getElementById('date').innerHTML = `<i class="far fa-clock"></i> ${new Date(article.date).toLocaleDateString('bn-BD')}`;
+        document.getElementById('image').src = article.image;
+        document.getElementById('body').textContent = article.body;
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('articleContent').style.display = 'block';
+
+      } catch (err) {
+        document.getElementById('loading').innerHTML = "সার্ভার থেকে খবর আনতে ত্রুটি হয়েছে।";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadArticle);
+  </script>
+</body>
+</html>

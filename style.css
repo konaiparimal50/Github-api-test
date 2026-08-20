@@ -1,0 +1,933 @@
+/* ===== Reset & Base ===== */
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+:root {
+  --accent: #b71c1c;
+  --accent-dark: #7f0000;
+  --text-dark: #1a1a1a;
+  --text-muted: #5a5a5a;
+  --bg-light: #f5f5f5;
+  --card-bg: #ffffff;
+  --border-color: #e0e0e0;
+}
+
+body {
+  font-family: 'Hind Siliguri', 'Segoe UI', sans-serif;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden; /* এটি ডানদিকের বাড়তি অংশ কেটে দেবে */
+}
+
+
+h1, h2, h3, h4, h5, h6, .logo h1, .section-heading h2, .card-content h3 {
+  font-family: 'Tiro Bangla', serif;
+}
+
+/* ===================================== */
+/* হেডার এবং নতুন মেনু বার */
+/* ===================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* মেনু এবং সার্চ বাটন */
+.menu-btn, .search-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.menu-btn:hover, .search-btn:hover { 
+  color: var(--accent); 
+}
+
+.logo a { 
+  text-decoration: none; 
+  color: inherit; 
+}
+
+.logo h1 { 
+  font-size: 1.6rem; 
+  font-weight: 700; 
+}
+
+.logo h1 span { 
+  color: var(--accent); 
+}
+
+/* পুরনো মেনু লুকিয়ে ফেলা হলো */
+.main-nav { 
+  display: none !important; 
+}
+
+/* ===================================== */
+/* সাইডবার মেনু এবং ওভারলে */
+/* ===================================== */
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: -300px; /* স্ক্রিনের বাইরে লুকানো থাকবে */
+  width: 260px;
+  height: 100vh;
+  background-color: #fff;
+  z-index: 2000;
+  box-shadow: 2px 0 15px rgba(0,0,0,0.15);
+  transition: left 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-menu.active {
+  left: 0; /* বাটনে ক্লিক করলে স্ক্রিনে আসবে */
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.sidebar-header h2 { 
+  font-size: 1.4rem; 
+  margin: 0; 
+  color: #fff; 
+}
+
+.close-btn {
+  background: none; 
+  border: none; 
+  color: #fff;
+  font-size: 1.6rem; 
+  cursor: pointer; 
+  transition: transform 0.2s;
+}
+
+.close-btn:hover { 
+  transform: rotate(90deg); 
+}
+
+.sidebar-links {
+  list-style: none; 
+  padding: 10px 0; 
+  margin: 0; 
+  overflow-y: auto;
+}
+
+.sidebar-links li { 
+  border-bottom: 1px solid #f0f0f0; 
+}
+
+.sidebar-links a {
+  display: flex; 
+  align-items: center; 
+  gap: 15px; 
+  padding: 15px 25px;
+  text-decoration: none; 
+  color: var(--text-dark); 
+  font-size: 1.1rem;
+  font-weight: 500; 
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-links a:hover {
+  background-color: #f9f9f9; 
+  color: var(--accent);
+  border-left: 4px solid var(--accent); 
+  padding-left: 21px;
+}
+
+.sidebar-links a i { 
+  width: 20px; 
+  text-align: center; 
+  color: var(--accent); 
+}
+
+/* ===================================== */
+/* সাইডবার ড্রপডাউন (জেলা / সম্পাদক) */
+/* ===================================== */
+.sidebar-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-toggle {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-icon {
+  margin-left: auto;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow: hidden;
+  background-color: #fafafa;
+  display: none; /* JS টগল করবে block/none */
+}
+
+.sidebar-submenu li {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-submenu li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-submenu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px 12px 48px; /* বাম দিকে বাড়তি ইনডেন্টেশন */
+  text-decoration: none;
+  color: var(--text-dark);
+  font-size: 0.98rem;
+  font-weight: 400;
+  position: relative;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-submenu a::before {
+  content: "\f105"; /* fa-chevron-right */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 28px;
+  font-size: 0.7rem;
+  color: var(--accent);
+}
+
+.sidebar-submenu a:hover {
+  background-color: #f1f1f1;
+  color: var(--accent);
+  border-left: 4px solid var(--accent);
+  padding-left: 44px;
+}
+
+/* মোবাইল স্ক্রিনে সাবমেনু রেসপন্সিভ */
+@media (max-width: 400px) {
+  .sidebar-submenu a {
+    padding: 10px 15px 10px 40px;
+    font-size: 0.92rem;
+  }
+}
+
+.sidebar-overlay {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100vh;
+  background: rgba(0,0,0,0.5); 
+  z-index: 1999;
+  opacity: 0; 
+  visibility: hidden; 
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active { 
+  opacity: 1; 
+  visibility: visible; 
+}
+
+/* ===================================== */
+/* News Section & Cards */
+/* ===================================== */
+.news-section {
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 30px 20px 60px;
+}
+
+.section-heading {
+  margin-bottom: 22px; 
+  border-left: 5px solid var(--accent); 
+  padding-left: 12px;
+}
+
+.section-heading h2 { 
+  font-size: 1.5rem; 
+  font-weight: 700; 
+}
+
+/* ===================================== */
+/* Top Stories: Hero + Secondary list     */
+/* ===================================== */
+.top-stories {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* --- হিরো (শীর্ষ খবর) কার্ড --- */
+.hero-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card-bg);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.14);
+}
+
+.hero-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.hero-link:hover .hero-media img {
+  transform: scale(1.04);
+}
+
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.9) 100%);
+}
+
+.hero-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 28px 26px 22px;
+  color: #ffffff;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffb3ab;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hero-headline {
+  font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+  line-height: 1.32;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.hero-excerpt {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+  max-width: 62ch;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 18px;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.hero-meta .editor-name {
+  color: #ffd9d4;
+  font-weight: 600;
+}
+
+.hero-meta i {
+  margin-right: 5px;
+}
+
+.hero-link:hover .hero-headline {
+  color: #ffd9d4;
+}
+
+/* --- সেকেন্ডারি (পাশের তালিকার) কার্ড --- */
+.secondary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.secondary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.secondary-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.secondary-link {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+}
+
+.secondary-media {
+  position: relative;
+  width: 92px;
+  flex-shrink: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.secondary-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.secondary-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.secondary-content h3 {
+  font-size: 0.98rem;
+  line-height: 1.4;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.secondary-link:hover h3 {
+  color: var(--accent);
+}
+
+.secondary-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* --- হিরো / সেকেন্ডারি / গ্রিড—সব জায়গায় ব্যবহৃত ক্যাটাগরি ব্যাজ --- */
+.category-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  color: #ffffff;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* ===================================== */
+/* Main grid + standard cards            */
+/* ===================================== */
+.news-grid {
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 24px;
+}
+
+.news-card {
+  background: var(--card-bg); 
+  border: 1px solid var(--border-color);
+  border-radius: 10px; 
+  overflow: hidden; 
+  display: flex; 
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-6px); 
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-media {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.news-card:hover .card-media img {
+  transform: scale(1.05);
+}
+
+.card-link:hover .card-content h3 {
+  color: var(--accent);
+}
+
+.card-link:hover .read-more {
+  border-color: var(--accent);
+}
+
+.card-content {
+  padding: 16px 18px; 
+  display: flex; 
+  flex-direction: column; 
+  flex: 1;
+}
+
+.card-content h3 {
+  font-size: 1.25rem; 
+  font-weight: bold; 
+  margin-bottom: 6px; 
+  line-height: 1.4;
+}
+
+/* তারিখের স্টাইল */
+.card-date {
+  font-size: 0.85rem;
+  color: #666666;
+  margin-bottom: 10px;
+  font-family: sans-serif;
+}
+
+.card-content p {
+  font-size: 0.92rem; 
+  color: var(--text-muted); 
+  flex: 1; 
+  margin-bottom: 12px;
+}
+
+.read-more {
+  align-self: flex-start; 
+  color: var(--accent); 
+  font-weight: 600; 
+  font-size: 0.9rem;
+  border-bottom: 1px solid transparent; 
+  transition: border-color 0.2s ease;
+}
+
+.status-message { 
+  text-align: center; 
+  margin-top: 30px; 
+  color: var(--text-muted); 
+}
+
+.status-message.error { 
+  color: var(--accent-dark); 
+}
+
+/* ===================================== */
+/* Footer */
+/* ===================================== */
+/* ===================================== */
+/* নতুন ডার্ক ফুটার (Dark Footer) ডিজাইন */
+/* ===================================== */
+.site-footer {
+  background-color: #111111; /* কুচকুচে কালো ব্যাকগ্রাউন্ড */
+  color: #cccccc;
+  font-family: 'Hind Siliguri', sans-serif;
+  margin-top: 40px;
+}
+
+.footer-top {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+/* লোগো এবং অ্যাবাউট অংশ */
+.footer-logo {
+  font-family: 'Tiro Bangla', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+.footer-logo span {
+  color: var(--accent); /* লাল রঙ */
+}
+.about-col p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #aaaaaa;
+}
+
+/* ক্যাটাগরি লিংক অংশ */
+.footer-col h3 {
+  font-family: 'Tiro Bangla', serif;
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 8px;
+}
+.footer-col h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--accent);
+}
+.links-col ul {
+  list-style: none;
+  padding: 0;
+}
+.links-col li {
+  margin-bottom: 10px;
+}
+.links-col a {
+  text-decoration: none;
+  color: #cccccc;
+  font-size: 1rem;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+.links-col a:hover {
+  color: var(--accent);
+  padding-left: 6px; /* হোভার করলে লেখাটা হালকা ডানদিকে সরবে */
+}
+
+/* সোশ্যাল মিডিয়া বাটন */
+.social-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #222222;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s;
+}
+.social-links a:hover {
+  background-color: var(--accent);
+  transform: translateY(-3px); /* হোভার করলে বাটন হালকা উপরে উঠবে */
+}
+
+/* ফুটারের একদম নিচের বার */
+.footer-bottom-wrapper {
+  background-color: #0a0a0a;
+  border-top: 1px solid #222222;
+}
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+.dev-link {
+  color: var(--accent);
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.dev-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* কম্পিউটার স্ক্রিনের জন্য লেআউট */
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+
+/* ===================================== */
+/* Responsive Styles */
+/* ===================================== */
+@media (max-width: 992px) { 
+  .news-grid { grid-template-columns: repeat(2, 1fr); } 
+}
+
+@media (max-width: 900px) {
+  .top-stories { grid-template-columns: 1fr; }
+  .secondary-container { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+  .secondary-card { flex: 0 0 260px; }
+}
+
+@media (max-width: 600px) {
+  .news-grid { grid-template-columns: 1fr; }
+  .logo h1 { font-size: 1.3rem; }
+  .hero-content { padding: 20px 18px 18px; }
+  .hero-excerpt { display: none; }
+  .secondary-container { flex-direction: column; overflow-x: visible; }
+  .secondary-card { flex: initial; }
+}
+
+/* ===================================== */
+/* Skeleton Loading Styles */
+/* ===================================== */
+.skel-card {
+  background: var(--card-bg); 
+  border: 1px solid var(--border-color);
+  border-radius: 10px; 
+  overflow: hidden; 
+  margin-bottom: 18px; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.skel-thumb { width: 100%; height: 190px; }
+.skel-body { padding: 16px; }
+.skel-line { height: 14px; border-radius: 4px; margin-bottom: 10px; }
+.skel-line.title-1 { width: 85%; height: 20px; }
+.skel-line.title-2 { width: 55%; height: 20px; }
+.skel-line.desc-1  { width: 100%; margin-top: 14px;}
+.skel-line.desc-2  { width: 90%; }
+.skel-line.cta     { width: 120px; height: 16px; margin-top: 14px; }
+
+/* হিরো এবং সেকেন্ডারি কার্ডের স্কেলিটন */
+.skel-hero { aspect-ratio: 16 / 9; }
+.skel-hero .skel-thumb { height: 100%; }
+
+.skel-secondary { display: flex; gap: 12px; padding: 10px; margin-bottom: 0; }
+.skel-secondary .skel-thumb { width: 92px; height: 70px; flex-shrink: 0; border-radius: 7px; }
+.skel-secondary .skel-body { padding: 4px 0; flex: 1; }
+
+/* ===================================== */
+/* কার্ড আসার সময় হালকা ফেড-ইন অ্যানিমেশন */
+/* ===================================== */
+@keyframes cardRise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-card,
+.secondary-card,
+.news-card {
+  animation: cardRise 0.45s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-card, .secondary-card, .news-card,
+  .hero-media img, .card-media img, .shimmer {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.shimmer {
+  background: #e2e2e2;
+  background-image: linear-gradient(90deg, #e2e2e2 0px, #f0f0f0 40px, #e2e2e2 80px);
+  background-size: 600px 100%;
+  animation: shimmer-sweep 1.4s infinite linear;
+}
+
+@keyframes shimmer-sweep {
+  0%   { background-position: -300px 0; }
+  100% { background-position: 300px 0; }
+}
+/* ===================================== */
+/* News Ticker (ব্রেকিং নিউজ স্ক্রল) */
+/* ===================================== */
+.news-ticker-container {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  overflow: hidden;
+  position: relative;
+  z-index: 99; /* হেডারের নিচে থাকার জন্য */
+}
+
+/* 'টাটকা খবর' লেখাটির ডিজাইন */
+.ticker-label {
+  background: var(--accent); /* লাল ব্যাকগ্রাউন্ড */
+  color: #ffffff;
+  padding: 8px 15px;
+  font-family: 'Tiro Bangla', serif;
+  font-weight: bold;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  z-index: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* লাল বক্সের ডানদিকে তীরের মতো ডিজাইন */
+.ticker-label::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 0;
+  border-top: 21px solid transparent;
+  border-bottom: 21px solid transparent;
+  border-left: 10px solid var(--accent);
+}
+
+.ticker-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 0; /* এই লাইনটিই আসল ম্যাজিক! এটি টেক্সটকে পেজের বাইরে যেতে বাধা দেবে */
+}
+
+
+/* অ্যানিমেশন চালু করা */
+.ticker-move {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker-scroll 25s linear infinite; /* ২৫ সেকেন্ড স্পিড, বাড়াতে বা কমাতে পারেন */
+}
+
+/* মাউস হোভার করলে স্ক্রল থেমে যাবে */
+.ticker-move:hover {
+  animation-play-state: paused; 
+  cursor: pointer;
+}
+
+.ticker-item {
+  padding: 0 2rem;
+  font-size: 1rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* প্রতিটি খবরের আগে একটা লাল রঙের ডট (•) চিহ্ন */
+.ticker-item::before {
+  content: '•';
+  color: var(--accent);
+  margin-right: 15px;
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
+/* ডান থেকে বাঁ দিকে যাওয়ার কি-ফ্রেম */
+@keyframes ticker-scroll {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+
+/* মোবাইল স্ক্রিনের জন্য সাইজ ছোট করা */
+@media (max-width: 600px) {
+  .ticker-label { font-size: 0.9rem; padding: 6px 10px; }
+  .ticker-label::after { 
+    border-top: 17px solid transparent; 
+    border-bottom: 18px solid transparent; 
+  }
+  .ticker-item { font-size: 0.9rem; }
+}
+
+/* ===================================== */
+/* Card Meta (Editor & Date) Styles */
+/* ===================================== */
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #666666;
+  margin-bottom: 10px;
+  font-family: 'Hind Siliguri', sans-serif;
+  border-bottom: 1px dashed #e0e0e0;
+  padding-bottom: 6px;
+}
+
+.editor-name {
+  font-weight: 600;
+  color: var(--accent); /* এডিটরের নাম লাল রঙে হাইলাইট হবে */
+}
+
+.editor-name i, .publish-date i {
+  margin-right: 5px;
+  color: var(--accent-dark);
+}
+
+.card-content h3 {
+  margin-top: 5px; /* মেটা ডেটার পর হেডলাইনে একটু স্পেস দেওয়া হলো */
+}
